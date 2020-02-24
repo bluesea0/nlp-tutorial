@@ -11,11 +11,11 @@ sentences = [ "i like dog", "i love coffee", "i hate milk"]
 
 word_list = " ".join(sentences).split()
 word_list = list(set(word_list))
-word_dict = {w: i for i, w in enumerate(word_list)}
+word_dict = {w: i for i, w in enumerate(word_list)}#通过这样建立字典可真好看。
 number_dict = {i: w for i, w in enumerate(word_list)}
 n_class = len(word_dict) # number of Vocabulary
 
-# NNLM Parameter
+# NNLM Parameter 神经网络语言模型
 n_step = 2 # n-1 in paper
 n_hidden = 2 # h in paper
 m = 2 # m in paper
@@ -30,7 +30,7 @@ def make_batch(sentences):
         target = word_dict[word[-1]]
 
         input_batch.append(input)
-        target_batch.append(target)
+        target_batch.append(target)#预测宾语
 
     return input_batch, target_batch
 
@@ -50,7 +50,7 @@ class NNLM(nn.Module):
         X = X.view(-1, n_step * m) # [batch_size, n_step * n_class]
         tanh = torch.tanh(self.d + torch.mm(X, self.H)) # [batch_size, n_hidden]
         output = self.b + torch.mm(X, self.W) + torch.mm(tanh, self.U) # [batch_size, n_class]
-        return output
+        return output#可是这样的意义在哪里，我不明白了就。。
 
 model = NNLM()
 
